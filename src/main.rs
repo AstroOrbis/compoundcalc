@@ -5,7 +5,7 @@ fn main() {
     let matches = App::new("CompoundCalc")
         .version("0.1.0")
         .author("Astro Orbis <astroorbis@gmail.com>")
-        .about("Teaches argument parsing")
+        .about("Calculates percentage per day compound interest")
         .arg(Arg::with_name("percentage")
                 .short('p')
                 .long("dailypercentage")
