@@ -1,11 +1,35 @@
-use std::env;
+use clap::{Arg, App};
+use std::io::{stdin, stdout, Read, Write};
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let matches = App::new("CompoundCalc")
+        .version("0.1.0")
+        .author("Astro Orbis <astroorbis@gmail.com>")
+        .about("Teaches argument parsing")
+        .arg(Arg::with_name("percentage")
+                .short('p')
+                .long("dailypercentage")
+                .takes_value(true)
+                .help("A cool file")
+        )
+        .arg(Arg::with_name("startval")
+                .short('s')
+                .long("startvalue")
+                .takes_value(true)
+                .help("Your starting value")
+        )
+        .arg(Arg::with_name("days")
+            .short('d')
+            .long("days")
+            .takes_value(true)
+            .help("Length of investment period in days")
+        )
+        .get_matches();
 
-    let ppd: i32 = args[1].parse::<i32>().unwrap();
-    let startval: i32 = args[2].parse::<i32>().unwrap();
-    let days: i32 = args[3].parse::<i32>().unwrap();
+    let ppd:      i32 = matches.value_of("percentage").unwrap().parse::<i32>().unwrap();
+    let startval: i32 = matches.value_of("startval").unwrap().parse::<i32>().unwrap();
+    let days:     i32 = matches.value_of("days").unwrap().parse::<i32>().unwrap();
+
 
     let mut valbuf: i32 = startval;
     let mut newval: i32 = startval;
@@ -16,6 +40,8 @@ fn main() {
     println!("Starting value: {}", startval);
     println!("Days: {}", days);
     println!("\n");
+
+    pause();
 
     for day in 1..=days {
         newval = calc_perc_inc(newval, ppd);
@@ -30,4 +56,11 @@ fn calc_perc_inc(number: i32, increase: i32) -> i32 {
 
 fn print_data(day: i32, startval: i32, newval: i32, valbuf: i32) {
     println!("New value on day {}: {} (+{} from starting value, and +{} from yesterday)", day, newval, newval-startval, newval-valbuf);
+}
+
+fn pause() {
+    let mut stdout = stdout();
+    stdout.write(b"Press Enter to continue...").unwrap();
+    stdout.flush().unwrap();
+    stdin().read(&mut [0]).unwrap();
 }
