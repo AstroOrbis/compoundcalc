@@ -1,4 +1,4 @@
-use clap::{Arg, App};
+use clap::{App, Arg};
 use std::io::{stdin, stdout, Read, Write};
 
 fn main() {
@@ -6,30 +6,40 @@ fn main() {
         .version("0.1.0")
         .author("Astro Orbis <astroorbis@gmail.com>")
         .about("Calculates percentage per day compound interest")
-        .arg(Arg::with_name("percentage")
+        .arg(
+            Arg::with_name("percentage")
                 .short('p')
                 .long("dailypercentage")
                 .takes_value(true)
-                .help("A cool file")
+                .help("Percentage of initial funding you get back per day"),
         )
-        .arg(Arg::with_name("startval")
+        .arg(
+            Arg::with_name("startval")
                 .short('s')
                 .long("startvalue")
                 .takes_value(true)
-                .help("Your starting value")
+                .help("The value you start with"),
         )
-        .arg(Arg::with_name("days")
-            .short('d')
-            .long("days")
-            .takes_value(true)
-            .help("Length of investment period in days")
+        .arg(
+            Arg::with_name("days")
+                .short('d')
+                .long("days")
+                .takes_value(true)
+                .help("Length of investment period in days"),
         )
         .get_matches();
 
-    let ppd:      i32 = matches.value_of("percentage").unwrap().parse::<i32>().unwrap();
-    let startval: i32 = matches.value_of("startval").unwrap().parse::<i32>().unwrap();
-    let days:     i32 = matches.value_of("days").unwrap().parse::<i32>().unwrap();
-
+    let ppd: i32 = matches
+        .value_of("percentage")
+        .unwrap()
+        .parse::<i32>()
+        .unwrap();
+    let startval: i32 = matches
+        .value_of("startval")
+        .unwrap()
+        .parse::<i32>()
+        .unwrap();
+    let days: i32 = matches.value_of("days").unwrap().parse::<i32>().unwrap();
 
     let mut valbuf: i32 = startval;
     let mut newval: i32 = startval;
@@ -55,7 +65,13 @@ fn calc_perc_inc(number: i32, increase: i32) -> i32 {
 }
 
 fn print_data(day: i32, startval: i32, newval: i32, valbuf: i32) {
-    println!("New value on day {}: {} (+{} from starting value, and +{} from yesterday)", day, newval, newval-startval, newval-valbuf);
+    println!(
+        "New value on day {}: {} (+{} from starting value, and +{} from yesterday)",
+        day,
+        newval,
+        newval - startval,
+        newval - valbuf
+    );
 }
 
 fn pause() {
