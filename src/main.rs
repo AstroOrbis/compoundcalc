@@ -1,5 +1,4 @@
 use clap::{App, Arg};
-use std::io::{stdin, stdout, Read, Write};
 
 fn main() {
     let matches = App::new("CompoundCalc")
