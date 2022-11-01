@@ -29,20 +29,20 @@ fn main() {
         )
         .get_matches();
 
-    let ppd: i32 = matches
+    let ppd: f32 = matches
         .value_of("percentage")
         .unwrap()
-        .parse::<i32>()
+        .parse::<f32>()
         .unwrap();
-    let startval: i32 = matches
+    let startval: f32 = matches
         .value_of("startval")
         .unwrap()
-        .parse::<i32>()
+        .parse::<f32>()
         .unwrap();
     let days: i32 = matches.value_of("days").unwrap().parse::<i32>().unwrap();
 
-    let mut valbuf: i32 = startval;
-    let mut newval: i32 = startval;
+    let mut valbuf: f32 = startval;
+    let mut newval: f32 = startval;
 
     clearscreen::clear().expect("Failed to clear screen");
 
@@ -51,8 +51,6 @@ fn main() {
     println!("Days: {}", days);
     println!("\n");
 
-    pause();
-
     for day in 1..=days {
         newval = calc_perc_inc(newval, ppd);
         print_data(day, startval, newval, valbuf);
@@ -60,11 +58,11 @@ fn main() {
     }
 }
 
-fn calc_perc_inc(number: i32, increase: i32) -> i32 {
-    number * (100 + increase) / 100
+fn calc_perc_inc(number: f32, increase: f32) -> f32 {
+    number * (100.0 + increase) / 100.0
 }
 
-fn print_data(day: i32, startval: i32, newval: i32, valbuf: i32) {
+fn print_data(day: i32, startval: f32, newval: f32, valbuf: f32) {
     println!(
         "New value on day {}: {} (+{} from starting value, and +{} from yesterday)",
         day,
@@ -72,11 +70,4 @@ fn print_data(day: i32, startval: i32, newval: i32, valbuf: i32) {
         newval - startval,
         newval - valbuf
     );
-}
-
-fn pause() {
-    let mut stdout = stdout();
-    stdout.write(b"Press Enter to continue...").unwrap();
-    stdout.flush().unwrap();
-    stdin().read(&mut [0]).unwrap();
 }
